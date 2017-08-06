@@ -1,0 +1,12 @@
+{
+  "name": "Sockchain",
+  "version": "0.0.1",
+  "license": "Apache License 2.0",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "dependencies": {
+    "blessed": "^0.1.81",
+    "node-rest-client": "^3.1.0"
+  }
+}

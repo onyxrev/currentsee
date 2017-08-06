@@ -1,0 +1,5 @@
+{
+  "fiatCurrencySymbol": "USD",
+  "currencySymbols": ["BTC", "ETH", "LTC"],
+  "updateInterval": 300
+}
