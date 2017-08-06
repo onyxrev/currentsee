@@ -1,11 +1,12 @@
-const CoinMarketCap = require("./coin_market_cap");
-const GUI           = require("./gui");
+const _  = require("lodash");
+const GUI = require("./gui");
 
 module.exports = class CryptoTicker {
   constructor(config = {}) {
     this.config = config;
-    this.client = new CoinMarketCap(config);
-    this.gui    = new GUI(
+    this.client = client(config);
+
+    this.gui = new GUI(
       Object.assign(
         config,
         {
@@ -20,20 +21,12 @@ module.exports = class CryptoTicker {
 
   refresh(){
     this.client.getTicker((data) => {
-      const indexedBySymbol = {};
-
-      data.forEach((currencyData) => {
-        indexedBySymbol[currencyData.symbol] = currencyData;
-      });
-
-      const currencySymbols = this.config.currencySymbols ||
-                              data.map(currency => currency.symbol);
-
-      let currencyData;
-      const rows = currencySymbols.map((symbol) => {
-        currencyData = indexedBySymbol[symbol];
-        return columnsForCurrency(this.config.columns, currencyData);
-      });
+      const rows = _.keys(data).map(
+                     symbol => columnsForCurrency(
+                       this.config.columns,
+                       data[symbol]
+                     )
+                   );
 
       this.gui.refresh(rows);
     });
@@ -50,3 +43,8 @@ const columnsForCurrency = (columns, currencyData) => {
     return currencyData[key];
   });
 };
+
+const client = (config) => {
+  const lib = require(`./${config.dataSource}`);
+  return new lib(config);
+}

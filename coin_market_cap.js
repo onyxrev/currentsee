@@ -1,11 +1,14 @@
+const _        = require('lodash');
 const Client   = require('node-rest-client').Client;
 const client   = new Client();
+
 const BASE_URL = "https://api.coinmarketcap.com";
 const VERSION  = "v1";
 const TICKER   = "ticker";
 const GET      = "get";
 const PRICE    = "price";
-const VERBATIM_KEYS = ["id", "name", "price_btc", "rank", "symbol", "percent_change_1h", "percent_change_24h", "percent_change_7d"];
+const SYMBOL   = "symbol";
+const VERBATIM_KEYS = ["id", "symbol", "percent_change_24h"];
 
 const DEFAULT_HEADERS = {
   "Content-Type": "application/json"
@@ -27,10 +30,31 @@ module.exports = class CoinMarketCap {
       {
         convert: this.fiatCurrencySymbol
       },
-      (allCurrencies) => {
-        callback(normalizeCurrencies(allCurrencies, this.fiatCurrencySymbol, this.currencySymbols));
-      }
+      allCurrencies => callback(this.normalizeCurrencies(allCurrencies))
     );
+  }
+
+  shouldIncludeCurrency(currencyData){
+    return _.includes(this.currencySymbols, currencyData.symbol);
+  }
+
+  normalizeCurrencies(allCurrencies){
+    return _.chain(allCurrencies).
+             filter(this.shouldIncludeCurrency.bind(this)).
+             map(this.normalizeCurrency.bind(this)).
+             keyBy(SYMBOL).
+             valueOf();
+  }
+
+  normalizeCurrency(currencyData){
+    return _.chain(currencyData).
+             pick(VERBATIM_KEYS).
+             set(PRICE, this.currencyDataPrice(currencyData)).
+             valueOf();
+  }
+
+  currencyDataPrice(currencyData){
+    return currencyData[`price_${this.fiatCurrencySymbol.toLowerCase()}`];
   }
 };
 
@@ -63,33 +87,4 @@ const fullURL = (path) => {
     VERSION,
     path
   ].join("/");
-};
-
-const normalizeCurrencies = (allCurrencies, fiatCurrencySymbol, currencySymbols) => {
-  return filterCurrencies(allCurrencies, currencySymbols).
-    map(currencyData => normalizeCurrency(fiatCurrencySymbol, currencyData));
-};
-
-const filterCurrencies = (allCurrencies, currencySymbols) => {
-  if (!currencySymbols) return allCurrencies;
-
-  return allCurrencies.filter((currencyData) => {
-    return currencySymbols.indexOf(currencyData.symbol) !== -1;
-  });
-};
-
-const normalizeCurrency = (fiatCurrencySymbol, currencyData) => {
-  const out = {};
-
-  VERBATIM_KEYS.forEach((key) => {
-    out[key] = currencyData[key];
-  });
-
-  return Object.assign(out, {
-    price: currencyDataPrice(fiatCurrencySymbol, currencyData)
-  });
-};
-
-const currencyDataPrice = (fiatCurrencySymbol, currencyData) => {
-  return currencyData[`price_${fiatCurrencySymbol.toLowerCase()}`];
 };

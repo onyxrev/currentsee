@@ -45,10 +45,9 @@ module.exports = class GUI {
   }
 
   refresh(rows){
-    this.table.setData(
-      [].concat([this.headers]).concat(rows)
-    );
+    const tableData = [].concat([this.headers]).concat(rows);
 
+    this.table.setData(tableData);
     this.table.focus();
     this.screen.render();
   }
