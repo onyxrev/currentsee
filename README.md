@@ -17,6 +17,8 @@ Looks something like...
 
 # Getting Started
 
+Work in progress. Not terribly user-friendly just yet.
+
 1. First install Node.js
 2.
 
