@@ -5,13 +5,20 @@ module.exports = class CryptoTicker {
   constructor(config = {}) {
     this.config = config;
     this.client = new CoinMarketCap(config);
-    this.gui    = new GUI(config);
+    this.gui    = new GUI(
+      Object.assign(
+        config,
+        {
+          dataSource: this.refresh.bind(this)
+        }
+      )
+    );
 
-    setInterval(this.update.bind(this), config.updateInterval * 1000);
-    this.update();
+    setInterval(this.refresh.bind(this), config.updateInterval * 1000);
+    this.refresh();
   }
 
-  update(rows){
+  refresh(){
     this.client.getTicker((data) => {
       const indexedBySymbol = {};
 
@@ -28,7 +35,7 @@ module.exports = class CryptoTicker {
         return columnsForCurrency(this.config.columns, currencyData);
       });
 
-      this.gui.update(rows);
+      this.gui.refresh(rows);
     });
   }
 };

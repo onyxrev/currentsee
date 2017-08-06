@@ -16,11 +16,13 @@ const STYLES = {
 };
 
 const QUIT_KEYS = ['escape', 'q', 'C-c'];
+const REFRESH_KEYS = ['u'];
 
 module.exports = class GUI {
   constructor(options = {}) {
     this.fiatCurrencySymbol = options.fiatCurrencySymbol;
     this.headers = options.columns.map(column => column[0]);
+    this.dataSource = options.dataSource;
 
     const screen = this.screen = blessed.screen({
       smartCSR: true
@@ -31,15 +33,18 @@ module.exports = class GUI {
     const table = this.table = blessed.table(STYLES);
     screen.append(table);
 
-    // Quit on Escape, q, or Control-C.
-    screen.key(QUIT_KEYS, function(ch, key) {
+    // Quit
+    screen.key(QUIT_KEYS, () => {
       return process.exit(0);
     });
+
+    // Refresh
+    screen.key(REFRESH_KEYS, this.dataSource);
 
     screen.render();
   }
 
-  update(rows){
+  refresh(rows){
     this.table.setData(
       [].concat([this.headers]).concat(rows)
     );
