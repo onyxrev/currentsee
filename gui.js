@@ -58,4 +58,4 @@ module.exports = class GUI {
 const priceHeader = (fiatCurrencySymbol) => {
   if (!fiatCurrencySymbol) return PRICE;
   return `${PRICE} (${fiatCurrencySymbol})`;
-}
+};

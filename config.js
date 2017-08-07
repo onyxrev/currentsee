@@ -3,7 +3,8 @@ const config = require("./config.json");
 config.columns = config.columns || [
   ["Symbol", "symbol"],
   ["Price", "price"],
-  ["24h", "percent_change_24h"]
+  ["Change", "stats_delta_display"],
+  ["Histogram", "stats_histogram"]
 ];
 
 config.updateInterval = config.updateInterval || 300; // seconds

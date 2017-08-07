@@ -92,4 +92,4 @@ const fullURL = (path) => {
 
 const round = (value) => {
   return Number(Math.round(value+'e'+DECIMALS)+'e-'+DECIMALS);
-}
+};

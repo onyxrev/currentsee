@@ -1,6 +1,7 @@
 {
   "fiatCurrencySymbol": "USD",
   "currencySymbols": ["BTC", "ETH", "LTC"],
-  "updateInterval": 30,
+  "updateInterval": 10,
+  "maxHistory": 30,
   "dataSource": "crypto_compare"
 }
