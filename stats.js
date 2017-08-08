@@ -17,7 +17,7 @@ const arrowCharacters = {
 module.exports = class Stats {
   constructor(options = {}){
     this.maxHistory = options.maxHistory || MAX_HISTORY;
-    this.intensity = options.updateInterval / 1000;
+    this.intensity = options.updateInterval / 5000;
 
     this.previous = {};
     this.history = {};
