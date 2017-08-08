@@ -1,9 +1,20 @@
 {
   "name": "Sockchain",
-  "version": "0.0.1",
-  "license": "Apache License 2.0",
+  "description": "A configurable command line / terminal cryptocurrency ticker written in node",
+  "version": "1.0.0",
+  "license": "Apache-2.0",
+  "bin": "bin/currentsee.js",
   "scripts": {
     "start": "node app.js"
+  },
+  "bugs": {
+    "url": "https://github.com/sblaurock/currentsee/issues"
+  },
+  "author": "onyxrev",
+  "homepage": "https://github.com/onyxrev/currentsee#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/onyxrev/currentsee.git"
   },
   "dependencies": {
     "blessed": "^0.1.81",
