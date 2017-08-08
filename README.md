@@ -9,15 +9,10 @@ Looks something like...
 
 Make sure you have Node.js installed. I'm using version 8.x
 
-```
-git clone https://github.com/onyxrev/currentsee.git
-cd currentsee
-```
-
 To install the binary globally on your system, run:
 
 ```
-npm install -g .
+npm install -g currentsee
 ```
 
 Now you can run that anywhere you like:
