@@ -1,4 +1,24 @@
-const config = require("./config.json");
+const os = require("os");
+const fs = require("fs");
+
+let config = {};
+const configFileName = ".currentsee";
+
+if (fs.existsSync(`${os.homedir()}/${configFileName}`)) {
+  config = JSON.parse(fs.readFileSync(`${os.homedir()}/${configFileName}`, 'utf8'));
+}
+
+config.maxHistory = config.maxHistory || 30;
+
+config.fiatCurrencySymbol = (
+  config.fiatCurrencySymbol || "USD"
+).toUpperCase();
+
+config.currencySymbols = (
+  config.currencySymbols || ["BTC", "ETH", "LTC"]
+).map(symbol => symbol.toUpperCase());
+
+config.updateInterval = config.updateInterval || 30;
 
 config.columns = config.columns || [
   ["Symbol", "symbol"],
@@ -9,13 +29,5 @@ config.columns = config.columns || [
 
 config.updateInterval = config.updateInterval || 300; // seconds
 config.dataSource = config.dataSource || "crypto_compare";
-
-if (config.fiatCurrencySymbol){
-  config.fiatCurrencySymbol = config.fiatCurrencySymbol.toUpperCase();
-}
-
-if (config.currencySymbols){
-  config.currencySymbols = config.currencySymbols.map(symbol => symbol.toUpperCase());
-}
 
 module.exports = config;
