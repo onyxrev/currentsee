@@ -40,11 +40,14 @@ module.exports = class CryptoTicker {
 /* private */
 
 const columnsForCurrency = (columns, currencyData) => {
-  let key;
+  let key, value;
 
   return columns.map((column) => {
     key = column[1];
-    return currencyData[key];
+    value = currencyData[key];
+
+    if (_.isUndefined(value)) value = "N/A";
+    return value;
   });
 };
 
