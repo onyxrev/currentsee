@@ -25,3 +25,9 @@ Now you can run that anywhere you like:
 ```
 currentsee
 ```
+
+To customize the confg file, copy the example to your home directory as `.currentsee`:
+
+```
+cp example_config.json ~/.currentsee
+```
