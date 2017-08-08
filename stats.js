@@ -63,7 +63,7 @@ module.exports = class Stats {
 
   pushHistory(symbol, stats){
     const history = this.history[symbol] = this.history[symbol] || [];
-    if (history.length > MAX_HISTORY) history.shift();
+    if (history.length > this.maxHistory) history.shift();
 
     history.push(stats);
 
