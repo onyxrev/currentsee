@@ -7,12 +7,21 @@ Looks something like...
 
 # Getting Started
 
-Work in progress. Not terribly user-friendly just yet.
-
-1. First install Node.js
-2.
+Make sure you have Node.js installed. I'm using version 8.x
 
 ```
-npm install
-npm start
+git clone https://github.com/onyxrev/currentsee.git
+cd currentsee
+```
+
+To install the binary globally on your system, run:
+
+```
+npm install -g .
+```
+
+Now you can run that anywhere you like:
+
+```
+currentsee
 ```
