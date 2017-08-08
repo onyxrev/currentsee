@@ -74,7 +74,8 @@ const request = (method, endpointName, parameters, callback) => {
       headers: DEFAULT_HEADERS
     },
     callback
-  );
+  ).on('error', function (err) {}); // just swallow errors and let the
+                                    // next request happen
 };
 
 const urlForEndpoint = (endpointName) => {
