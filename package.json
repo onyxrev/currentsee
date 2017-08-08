@@ -1,5 +1,5 @@
 {
-  "name": "Sockchain",
+  "name": "currentsee",
   "description": "A configurable command line / terminal cryptocurrency ticker written in node",
   "version": "1.0.0",
   "license": "Apache-2.0",
