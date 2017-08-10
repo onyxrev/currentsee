@@ -1,7 +1,7 @@
 {
   "name": "currentsee",
   "description": "A configurable command line / terminal cryptocurrency ticker written in node",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "license": "Apache-2.0",
   "bin": "bin/currentsee.js",
   "scripts": {
