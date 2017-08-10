@@ -40,12 +40,7 @@ module.exports = class Stats {
       diff = currentPrice - previousPrice;
       delta = diff / previousPrice;
 
-      stats[currency.symbol] = {
-        stats_delta:     delta,
-        stats_delta_display: deltaToDisplay(delta),
-        stats_arrow_character: arrowCharacter(delta),
-        stats_intensity_character: intensityCharacter(delta, this.intensity)
-      };
+      stats[currency.symbol] = statsObject(delta);
 
       const history = this.pushHistory(
         currency.symbol,
@@ -62,9 +57,13 @@ module.exports = class Stats {
   }
 
   pushHistory(symbol, stats){
-    const history = this.history[symbol] = this.history[symbol] || [];
-    if (history.length > this.maxHistory) history.shift();
+    const history = this.history[symbol] = this.history[symbol] ||
+                                           _.times(this.maxHistory, () => {
+                                             // fill with empty stats objects
+                                             return statsObject();
+                                           });
 
+    history.shift();
     history.push(stats);
 
     return history;
@@ -72,6 +71,8 @@ module.exports = class Stats {
 };
 
 const deltaToDisplay = (delta) => {
+  if (_.isUndefined(delta)) return "";
+
   const text = `${arrowCharacter(delta)} ${round(delta * 100)}%`;
   return colorizeNumber(delta, text);
 };
@@ -81,6 +82,8 @@ const round = (value) => {
 };
 
 const intensityCharacter = (delta, intensity) => {
+  if (_.isUndefined(delta)) return " ";
+
   var char = intensityCharacters[0.00];
   var abs = Math.abs(delta / intensity);
 
@@ -91,8 +94,17 @@ const intensityCharacter = (delta, intensity) => {
   return colorizeNumber(delta, char);
 };
 
+const statsObject = (delta) => {
+  return {
+    stats_delta:               delta || 0,
+    stats_delta_display:       deltaToDisplay(delta),
+    stats_arrow_character:     arrowCharacter(delta),
+    stats_intensity_character: intensityCharacter(delta, this.intensity)
+  };
+};
+
 const arrowCharacter = (delta) => {
-  if (delta == 0) return arrowCharacters.neutral;
+  if (_.isUndefined(delta) || delta == 0) return arrowCharacters.neutral;
   return delta > 0 ? arrowCharacters.up : arrowCharacters.down;
 };
 
